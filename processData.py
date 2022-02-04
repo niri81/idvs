@@ -131,7 +131,7 @@ class Metar():
 
     def is_vmc(self):
         logging.info("Returning flight rules")
-        return True if self.metar['flight_rules'] == "VFR" else False
+        return self.metar['flight_rules']
 
     def get_clouds(self):
         cloudsstr = ""
