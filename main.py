@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QMessageBox, QFileDialog
 from processData import *
 import logging
 
+
 class Ui_MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         QtCore.QObject.__init__(self)
@@ -14,7 +15,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         while okay == -1:
             if config['DEFAULT']['STATION']:
                 if not txt:
-                    self.show_stationPopup("Enter your callsign (e.g. EDDM_TWR) or press Enter to choose the last controlled station.")
+                    self.show_stationPopup(
+                        "Enter your callsign (e.g. EDDM_TWR) or press Enter to choose the last controlled station.")
                 else:
                     self.show_stationPopup("Enter another station.")
                 if self.station == "":
@@ -26,7 +28,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             if txt != "Station online":
                 self.show_errorPopup(txt)
         self.update_config(config, 'STATION', self.station)
-            
+
         logging.info(f"Station: {self.station}")
         self.choose_chart()
         self.timeTimer = QtCore.QTimer()
@@ -36,7 +38,6 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.updateTimer.timeout.connect(self.updateUi)
         self.updateTimer.start(60000)
         logging.info("Timer set")
-
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -135,7 +136,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         font.setFamily("Arial")
         font.setPointSize(25)
         self.highWindDir2.setFont(font)
-        self.highWindDir2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.highWindDir2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.highWindDir2.setObjectName("highWindDir2")
         self.lowWindDir2 = QtWidgets.QLabel(self.GWinfInfo2)
         self.lowWindDir2.setGeometry(QtCore.QRect(-30, 10, 111, 221))
@@ -143,7 +144,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         font.setFamily("Arial")
         font.setPointSize(25)
         self.lowWindDir2.setFont(font)
-        self.lowWindDir2.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.lowWindDir2.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
         self.lowWindDir2.setObjectName("lowWindDir2")
         self.currWindSpd2 = QtWidgets.QLabel(self.GWinfInfo2)
         self.currWindSpd2.setGeometry(QtCore.QRect(360, 0, 271, 231))
@@ -159,7 +160,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         font.setFamily("Arial")
         font.setPointSize(25)
         self.highWindSpd2.setFont(font)
-        self.highWindSpd2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.highWindSpd2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.highWindSpd2.setObjectName("highWindSpd2")
         self.lowWindSpd2 = QtWidgets.QLabel(self.GWinfInfo2)
         self.lowWindSpd2.setGeometry(QtCore.QRect(380, 10, 51, 221))
@@ -167,7 +168,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         font.setFamily("Arial")
         font.setPointSize(25)
         self.lowWindSpd2.setFont(font)
-        self.lowWindSpd2.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.lowWindSpd2.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
         self.lowWindSpd2.setObjectName("lowWindSpd2")
         self.arrowR2 = QtWidgets.QLabel(self.GWinfInfo2)
         self.arrowR2.setGeometry(QtCore.QRect(230, 110, 21, 21))
@@ -223,7 +224,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         font.setFamily("Arial")
         font.setPointSize(25)
         self.highWindDir.setFont(font)
-        self.highWindDir.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.highWindDir.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.highWindDir.setObjectName("highWindDir")
         self.lowWindDir = QtWidgets.QLabel(self.GWindInfo1)
         self.lowWindDir.setGeometry(QtCore.QRect(-30, 10, 111, 221))
@@ -231,7 +232,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         font.setFamily("Arial")
         font.setPointSize(25)
         self.lowWindDir.setFont(font)
-        self.lowWindDir.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.lowWindDir.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
         self.lowWindDir.setObjectName("lowWindDir")
         self.currWindSpd = QtWidgets.QLabel(self.GWindInfo1)
         self.currWindSpd.setGeometry(QtCore.QRect(360, 0, 271, 231))
@@ -247,7 +248,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         font.setFamily("Arial")
         font.setPointSize(25)
         self.highWindSpd.setFont(font)
-        self.highWindSpd.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.highWindSpd.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.highWindSpd.setObjectName("highWindSpd")
         self.lowWindSpd = QtWidgets.QLabel(self.GWindInfo1)
         self.lowWindSpd.setGeometry(QtCore.QRect(380, 10, 51, 221))
@@ -255,7 +256,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         font.setFamily("Arial")
         font.setPointSize(25)
         self.lowWindSpd.setFont(font)
-        self.lowWindSpd.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.lowWindSpd.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
         self.lowWindSpd.setObjectName("lowWindSpd")
         self.arrowR = QtWidgets.QLabel(self.GWindInfo1)
         self.arrowR.setGeometry(QtCore.QRect(230, 110, 21, 21))
@@ -342,7 +343,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         font.setFamily("Arial")
         font.setPointSize(16)
         self.cloudInfo.setFont(font)
-        self.cloudInfo.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft)
+        self.cloudInfo.setAlignment(QtCore.Qt.AlignBottom | QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft)
         self.cloudInfo.setObjectName("cloudInfo")
         self.visibility = QtWidgets.QLabel(self.GAddInfo)
         self.visibility.setGeometry(QtCore.QRect(10, 10, 71, 21))
@@ -458,14 +459,15 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         logging.debug("Time updated")
 
     def show_stationPopup(self, msg):
-        self.station, done1 = QtWidgets.QInputDialog.getText(self, "Enter controlled position", msg, flags=QtCore.Qt.Popup)
+        self.station, done1 = QtWidgets.QInputDialog.getText(self, "Enter controlled position", msg,
+                                                             flags=QtCore.Qt.Popup)
         self.station = self.station.upper()
         if done1:
             return
         else:
             logging.critical("Closed station input")
             sys.exit(1)
-    
+
     def show_errorPopup(self, msg):
         button = QMessageBox.critical(self, "Error", msg, QMessageBox.Retry | QMessageBox.Close, QMessageBox.Retry)
         if button == QMessageBox.Close:
@@ -486,21 +488,25 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         if msg.clickedButton() == msg.button(QMessageBox.Close):
             logging.critical("Closed chart messagebox")
             sys.exit(1)
-        fileName, check = QFileDialog.getOpenFileName(self,"Choose chart to display", "","All Files (*);;JPEG Files (*.jpg, *.jpeg);;PNG Files (*.png)")
+        fileName, check = QFileDialog.getOpenFileName(self, "Choose chart to display", "",
+                                                      "All Files (*);;JPEG Files (*.jpg, *.jpeg);;PNG Files (*.png)")
         if check:
             logging.info("File chosen")
             self.chartfile = fileName
         else:
             logging.critical("Exited during file browser")
             sys.exit(1)
-    
+
     def update_config(self, configHandler: ConfigParser, option, value):
         configHandler.set('DEFAULT', option, value)
         with open('config.ini', 'w+') as cfg:
             configHandler.write(cfg)
 
+
 def set_Logger():
-    log = logging.basicConfig(filename="log.log", filemode="w", format="%(asctime)s\t%(levelname)s\t%(filename)s:%(lineno)s\t\t%(message)s", datefmt="%H:%M:%S")
+    log = logging.basicConfig(filename="log.log", filemode="w",
+                              format="%(asctime)s\t%(levelname)s\t%(filename)s:%(lineno)s\t\t%(message)s",
+                              datefmt="%H:%M:%S")
     log = logging.getLogger()
     config = ConfigParser()
     config.read('config.ini')
