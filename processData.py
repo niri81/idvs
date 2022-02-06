@@ -13,12 +13,12 @@ def check_station(station):
             break
     if res == "":
         res = "Station offline"
-        logging.warning("Station offline")
+        logging.warning(f"Station {station} offline")
         return res, -1
     if station.find("CTR") != -1:
-        logging.warning("No METAR")
+        logging.warning(f"No METAR for station {station}")
         return "Make sure you choose a facility featuring a METAR!", -1
-    logging.info("Station online and has METAR")
+    logging.info(f"Station {station} online and has METAR")
     return res, 0
 
 class Atis:
