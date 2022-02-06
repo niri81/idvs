@@ -464,13 +464,13 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             return
         else:
             logging.critical("Closed station input")
-            exit(1)
+            sys.exit(1)
     
     def show_errorPopup(self, msg):
         button = QMessageBox.critical(self, "Error", msg, QMessageBox.Retry | QMessageBox.Close, QMessageBox.Retry)
         if button == QMessageBox.Close:
             logging.critical("Closed error box after station input")
-            exit(1)
+            sys.exit(1)
 
     def choose_chart(self):
         msg = QMessageBox()
@@ -485,14 +485,14 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         msg.exec_()
         if msg.clickedButton() == msg.button(QMessageBox.Close):
             logging.critical("Closed chart messagebox")
-            exit(1)
+            sys.exit(1)
         fileName, check = QFileDialog.getOpenFileName(self,"Choose chart to display", "","All Files (*);;JPEG Files (*.jpg, *.jpeg);;PNG Files (*.png)")
         if check:
             logging.info("File chosen")
             self.chartfile = fileName
         else:
             logging.critical("Exited during file browser")
-            exit(1)
+            sys.exit(1)
     
     def update_config(self, configHandler: ConfigParser, option, value):
         configHandler.set('DEFAULT', option, value)
