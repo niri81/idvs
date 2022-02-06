@@ -24,6 +24,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                     logging.debug("Last station")
             else:
                 self.show_stationPopup("Enter your callsign (e.g. EDDM_TWR).")
+                while not self.station:
+                    self.show_stationPopup("Enter your callsign (e.g. EDDM_TWR).")
             txt, okay = check_station(self.station)
             if txt != "Station online":
                 self.show_errorPopup(txt)
