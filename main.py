@@ -1,11 +1,29 @@
 import sys
+from winsound import SND_FILENAME, PlaySound
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox, QFileDialog
 from processData import *
 import logging
+from metarChange import *
+
+logging.basicConfig(filename="log.log", filemode="w", format="%(asctime)s\t%(levelname)s\t%(filename)s:%(lineno)s\t\t%(message)s", datefmt="%H:%M:%S")
+log = logging.getLogger()
+config = ConfigParser()
+config.read('config.ini')
+if config['DEFAULT']['LOGGER'].upper() == "DEBUG":
+    log.setLevel(logging.DEBUG)
+elif config['DEFAULT']['LOGGER'].upper() == "INFO":
+    log.setLevel(logging.INFO)
+elif config['DEFAULT']['LOGGER'].upper() == "WARNING":
+    log.setLevel(logging.WARNING)
+elif config['DEFAULT']['LOGGER'].upper() == "ERROR":
+    log.setLevel(logging.ERROR)
+elif config['DEFAULT']['LOGGER'].upper() == "CRITICAL":
+    log.setLevel(logging.CRITICAL)
 
 
 class Ui_MainWindow(QtWidgets.QMainWindow):
+    old_metar, new_metar = "", ""
     def __init__(self):
         QtCore.QObject.__init__(self)
         config = ConfigParser()
@@ -120,11 +138,11 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.currAtisLetter.setFont(font)
         self.currAtisLetter.setAlignment(QtCore.Qt.AlignCenter)
         self.currAtisLetter.setObjectName("currAtisLetter")
-        self.GWinfInfo2 = QtWidgets.QGroupBox(self.centralwidget)
-        self.GWinfInfo2.setGeometry(QtCore.QRect(1280, 50, 631, 211))
-        self.GWinfInfo2.setTitle("")
-        self.GWinfInfo2.setObjectName("GWinfInfo2")
-        self.currWindDir2 = QtWidgets.QLabel(self.GWinfInfo2)
+        self.GWindInfo2 = QtWidgets.QGroupBox(self.centralwidget)
+        self.GWindInfo2.setGeometry(QtCore.QRect(1280, 50, 631, 211))
+        self.GWindInfo2.setTitle("")
+        self.GWindInfo2.setObjectName("GWindInfo2")
+        self.currWindDir2 = QtWidgets.QLabel(self.GWindInfo2)
         self.currWindDir2.setGeometry(QtCore.QRect(6, 2, 341, 221))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -132,7 +150,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.currWindDir2.setFont(font)
         self.currWindDir2.setAlignment(QtCore.Qt.AlignCenter)
         self.currWindDir2.setObjectName("currWindDir2")
-        self.highWindDir2 = QtWidgets.QLabel(self.GWinfInfo2)
+        self.highWindDir2 = QtWidgets.QLabel(self.GWindInfo2)
         self.highWindDir2.setGeometry(QtCore.QRect(280, 10, 101, 221))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -140,7 +158,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.highWindDir2.setFont(font)
         self.highWindDir2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.highWindDir2.setObjectName("highWindDir2")
-        self.lowWindDir2 = QtWidgets.QLabel(self.GWinfInfo2)
+        self.lowWindDir2 = QtWidgets.QLabel(self.GWindInfo2)
         self.lowWindDir2.setGeometry(QtCore.QRect(-30, 10, 111, 221))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -148,7 +166,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.lowWindDir2.setFont(font)
         self.lowWindDir2.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
         self.lowWindDir2.setObjectName("lowWindDir2")
-        self.currWindSpd2 = QtWidgets.QLabel(self.GWinfInfo2)
+        self.currWindSpd2 = QtWidgets.QLabel(self.GWindInfo2)
         self.currWindSpd2.setGeometry(QtCore.QRect(360, 0, 271, 231))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -156,7 +174,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.currWindSpd2.setFont(font)
         self.currWindSpd2.setAlignment(QtCore.Qt.AlignCenter)
         self.currWindSpd2.setObjectName("currWindSpd2")
-        self.highWindSpd2 = QtWidgets.QLabel(self.GWinfInfo2)
+        self.highWindSpd2 = QtWidgets.QLabel(self.GWindInfo2)
         self.highWindSpd2.setGeometry(QtCore.QRect(570, 10, 61, 221))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -164,7 +182,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.highWindSpd2.setFont(font)
         self.highWindSpd2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.highWindSpd2.setObjectName("highWindSpd2")
-        self.lowWindSpd2 = QtWidgets.QLabel(self.GWinfInfo2)
+        self.lowWindSpd2 = QtWidgets.QLabel(self.GWindInfo2)
         self.lowWindSpd2.setGeometry(QtCore.QRect(380, 10, 51, 221))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -172,7 +190,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.lowWindSpd2.setFont(font)
         self.lowWindSpd2.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
         self.lowWindSpd2.setObjectName("lowWindSpd2")
-        self.arrowR2 = QtWidgets.QLabel(self.GWinfInfo2)
+        self.arrowR2 = QtWidgets.QLabel(self.GWindInfo2)
         self.arrowR2.setGeometry(QtCore.QRect(230, 110, 21, 21))
         self.arrowR2.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.arrowR2.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -181,7 +199,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.arrowR2.setScaledContents(True)
         self.arrowR2.setWordWrap(False)
         self.arrowR2.setObjectName("arrowR2")
-        self.arrowL2 = QtWidgets.QLabel(self.GWinfInfo2)
+        self.arrowL2 = QtWidgets.QLabel(self.GWindInfo2)
         self.arrowL2.setGeometry(QtCore.QRect(100, 110, 21, 21))
         self.arrowL2.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.arrowL2.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -190,7 +208,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.arrowL2.setScaledContents(True)
         self.arrowL2.setWordWrap(False)
         self.arrowL2.setObjectName("arrowL2")
-        self.arrowD2 = QtWidgets.QLabel(self.GWinfInfo2)
+        self.arrowD2 = QtWidgets.QLabel(self.GWindInfo2)
         self.arrowD2.setGeometry(QtCore.QRect(440, 110, 21, 21))
         self.arrowD2.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.arrowD2.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -199,7 +217,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.arrowD2.setScaledContents(True)
         self.arrowD2.setWordWrap(False)
         self.arrowD2.setObjectName("arrowD2")
-        self.arrowU2 = QtWidgets.QLabel(self.GWinfInfo2)
+        self.arrowU2 = QtWidgets.QLabel(self.GWindInfo2)
         self.arrowU2.setGeometry(QtCore.QRect(530, 110, 21, 21))
         self.arrowU2.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.arrowU2.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -398,7 +416,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.currGust.setFont(font)
         self.currGust.setAlignment(QtCore.Qt.AlignCenter)
         self.currGust.setObjectName("currGust")
-        self.currGust2 = QtWidgets.QLabel(self.GWinfInfo2)
+        self.currGust2 = QtWidgets.QLabel(self.GWindInfo2)
         self.currGust2.setGeometry(QtCore.QRect(0, 170, 631, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -424,11 +442,18 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         atis = Atis(self.station)
         metar = Metar()
         metar.get_metar(atis.get_metar())
+        self.new_metar = metar.return_metar()
+        if not self.old_metar:
+            self.old_metar = self.new_metar
         rwy1, rwy2 = atis.get_runways()
         self.br1.setText(rwy1)
         self.br2.setText(rwy2)
         self.cloudInfo.setText(metar.get_clouds())
+        self.old_atis = self.currAtisLetter.text()
+        if self.old_atis == '':
+            self.old_atis = atis.get_atisLetter()
         self.currAtisLetter.setText(atis.get_atisLetter())
+        self.new_atis = self.currAtisLetter.text()
         self.currCond.setText(metar.is_vmc())
         self.currDewPoint.setText(metar.get_dewpoint())
         self.currInch.setText(metar.get_inch())
@@ -454,6 +479,15 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.currGust.setText(f"Gusting: {metar.get_gust()}" if metar.get_gust() != None else "")
         self.currGust2.setText(f"Gusting: {metar.get_gust()}" if metar.get_gust() != None else "")
         logging.info("UI updated")
+        change = getMetarChange(self.old_metar, self.new_metar)
+        if self.old_atis != self.new_atis:
+            change.append('atis')
+        for change in change:
+            changeColor(self, change)
+        if change != []:
+            PlaySound('sounds/MetarChangeSound.wav', SND_FILENAME)
+        rechangeColor(self, change)
+        self.old_metar = self.new_metar
 
     def updateTime(self):
         self.currTime.setText(f"{get_utc_hour()}:       :{get_utc_second()}")
@@ -505,28 +539,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             configHandler.write(cfg)
 
 
-def set_Logger():
-    log = logging.basicConfig(filename="log.log", filemode="w",
-                              format="%(asctime)s\t%(levelname)s\t%(filename)s:%(lineno)s\t\t%(message)s",
-                              datefmt="%H:%M:%S")
-    log = logging.getLogger()
-    config = ConfigParser()
-    config.read('config.ini')
-    if config['DEFAULT']['LOGGER'].upper() == "DEBUG":
-        log.setLevel(logging.DEBUG)
-    elif config['DEFAULT']['LOGGER'].upper() == "INFO":
-        log.setLevel(logging.INFO)
-    elif config['DEFAULT']['LOGGER'].upper() == "WARNING":
-        log.setLevel(logging.WARNING)
-    elif config['DEFAULT']['LOGGER'].upper() == "ERROR":
-        log.setLevel(logging.ERROR)
-    elif config['DEFAULT']['LOGGER'].upper() == "CRITICAL":
-        log.setLevel(logging.CRITICAL)
-    logging.info("Logger set")
-
-
 if __name__ == "__main__":
-    set_Logger()
+    logging.info("Logger set")
     logging.info("Starting")
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
