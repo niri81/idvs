@@ -223,3 +223,7 @@ class Metar():
             logging.info("Returning gusts")
             return str(self.metar['wind_gust']['repr'])
         logging.info("No gusts")
+
+    def return_metar(self):
+        return self.metar
+
