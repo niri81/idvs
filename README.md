@@ -9,7 +9,7 @@ Fetching data from your ATIS following data is issued:
 
 ## What do I need to do to use IDVS for my controller sessions?
 1. Download a zip-file of IDVS (found at the release tab). Unpack it where you want IDVS to be.
-2. Fetch yourself an API key from [AVWX here](https://account.avwx.rest/tokens). No worries, this is at no costs and there are no fees to pay while using IDVS. You have 4k free API requests a day. Requesting once a minute uses 1/3 of this available amount if you were to run IDVS 24 hours daily.
+2. Fetch yourself an API key from [AVWX here](https://account.avwx.rest/tokens) and enter it in the config.ini file. No worries, this is at no costs and there are no fees to pay while using IDVS. You have 4k free API requests a day. Requesting once a minute uses 1/3 of this available amount if you were to run IDVS 24 hours daily.
 3. You may think about getting some charts to display in the chart box (Keep in mind that size should be 1920*620).
 
 ## How do I start IDVS?
