@@ -63,7 +63,7 @@ class Atis:
                             runways.append(
                                 str(rwy[i].split(" ")[j]))
         ret1, ret2 = 0, 0
-        logging.debug("Runways list created")
+        logging.debug(f"Runways list created, is: {runways}")
         for i in range(0, len(runways)):
             if runways[i][:2] == ret1:
                 pass
@@ -95,8 +95,12 @@ class Atis:
             logging.error(f"Error while parsing, check data: {self.data}")
 
     def get_atisLetter(self):
-        logging.info("Returned ATIS letter")
-        return self.data[2][12]
+        if 'information' in self.data[2]:
+            logging.info(f"Returned ATIS letter, is: {self.data[2].split('information ')[1][0]}")
+            return self.data[2].split('information ')[1][0]
+        else:
+            logging.info(f"Returned ATIS letter, is: {self.data[1].split('information ')[1][0]}")
+            return self.data[1].split('information ')[1][0]
 
 
 class Metar():
