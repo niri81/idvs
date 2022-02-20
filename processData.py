@@ -52,7 +52,7 @@ class Atis:
                 rwy = self.data[i]
         rwy = rwy.replace("ARR RWY ", "").replace(
             "DEP RWY ", "").split(" / TRL ")[0]
-        rwy = rwy.strip.split("/")
+        rwy = rwy.strip().split("/")
         for i in range(0, len(rwy)):
             for j in range(0, len(rwy[i].split(" "))):
                 if rwy[i].split(" ")[j] not in runways:
