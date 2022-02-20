@@ -2,7 +2,7 @@
 Push your controlling on IVAO to the next level!
 
 ## What is IDVS?
-IDVS (abbreviation of "Informationsdatenverarbeitungsprogramm", which is german for: Information processing program) is a program used by the "Deutsche Flugsicherung (DFS). Being informed about winds (especially their directions and their speed) is crucial in order to allow for a smooth and efficient use of departure and arrival slots. Thus IDVS provides this data as well as knowledge about the current meteorological and visual conditions returning whether or no these circumstances fulfill the requirement for VMC and therefore allow for VFR-flights.
+IDVS (abbreviation of "Informationsdatenverarbeitungsprogramm", which is german for: Information processing program) is a program used by the "Deutsche Flugsicherung" (DFS). Being informed about winds (especially their directions and their speed) is crucial in order to allow for a smooth and efficient use of departure and arrival slots. Thus IDVS provides this data as well as knowledge about the current meteorological and visual conditions returning whether or no these circumstances fulfill the requirement for VMC and therefore allow for VFR-flights.
 Fetching data from your ATIS following data is issued:
 
 ![Alt text](./sample_pictures/mainwindow.png)
@@ -29,3 +29,5 @@ IDVS fetches your ATIS from the IVAO WhazzUp data, which is free for everyone. T
     - Temperature and dew point are fetched and shown.
 
 Next to this the current time is updated every 250 milliseconds.
+
+If your METAR or ATIS letter did change, these changes will be shown in a red or green color (depending on their importance). Additionally a sound will be played to notify you about the changes.
