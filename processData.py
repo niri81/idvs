@@ -29,6 +29,7 @@ class Atis:
     def __init__(self, station):
         self.station = station
         data = fetch_whazzup()
+        logging.debug(f"Data available is:\t{data}")
         for i in range(0, len(data) - 1):
             if str(data[i]['lines'][0]).find(station) != -1:
                 self.data = data[i]['lines']
@@ -36,12 +37,8 @@ class Atis:
 
         if not self.data:
             logging.critical("Station seems to be offline.")
-
-        try:
-            self.data[3]
-            logging.info("METAR available")
-        except IndexError:
-            logging.error("Make sure you choose a facility featuring a METAR!")
+        
+        logging.debug(f"Station data available is:\t{self.data}")
 
     def get_runways(self):
         logging.debug("Fetching runways...")
@@ -52,10 +49,12 @@ class Atis:
                 rwy = self.data[i]
         rwy = rwy.replace("ARR RWY ", "").replace(
             "DEP RWY ", "").split(" / TRL ")[0]
-        rwy = rwy.strip.split("/")
+        rwy = rwy.split("/")
         for i in range(0, len(rwy)):
             for j in range(0, len(rwy[i].split(" "))):
                 if rwy[i].split(" ")[j] not in runways:
+                    if rwy[i].split(" ")[j] == '':
+                        continue
                     if not "LRC" in rwy[i].split(" ")[j]:
                         runways.append(str(rwy[i].split(" ")[j]))
                     else:
@@ -95,12 +94,12 @@ class Atis:
             logging.error(f"Error while parsing, check data: {self.data}")
 
     def get_atisLetter(self):
-        if 'information' in self.data[2]:
-            logging.info(f"Returned ATIS letter, is: {self.data[2].split('information ')[1][0]}")
-            return self.data[2].split('information ')[1][0]
+        if 'information' in self.data[2].lower():
+            logging.info(f"Returned ATIS letter, is: {self.data[2].lower().split('information ')[1][0].upper()}")
+            return self.data[2].lower().split('information ')[1][0].upper()
         else:
-            logging.info(f"Returned ATIS letter, is: {self.data[1].split('information ')[1][0]}")
-            return self.data[1].split('information ')[1][0]
+            logging.info(f"Returned ATIS letter, is: {self.data[1].lower().split('information ')[1][0].upper()}")
+            return self.data[1].lower().split('information ')[1][0].upper()
 
 
 class Metar():
