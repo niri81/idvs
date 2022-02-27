@@ -83,4 +83,3 @@ def rechangeColor(Ui_MainWindow: Ui_MainWindow, change):
         Ui_MainWindow.highWindDir.setStyleSheet('color:black')
         Ui_MainWindow.lowWindDir2.setStyleSheet('color:black')
         Ui_MainWindow.highWindDir2.setStyleSheet('color:black')
-

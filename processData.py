@@ -229,4 +229,3 @@ class Metar():
 
     def return_metar(self):
         return self.metar
-
